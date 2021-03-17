@@ -27,17 +27,65 @@ class Moto extends Veiculo
     }
 }
 
-Veiculo::setMarca("Yamaha");
+class Scotter
+{
+    private $moto;
+
+    public function __construct($moto)
+    {
+        $this->moto = $moto;
+    }
+
+    public function __destruct()
+    {
+        echo "\n Destrutor executado\n";
+    }
+}
+
+class Condutor
+{
+    private $nome;
+    private $moto;
+
+    public function setNome($nome)
+    {
+        $this->nome = $nome;
+    }
+
+    public function getNome()
+    {
+        return $this->nome;
+    }
+
+    public function inserirMoto(Moto $moto)
+    {
+        $this->moto = $moto;
+    }
+
+    public function getInfoMoto()
+    {
+        echo "A marca da moto é: " . Moto::getMarca() . "\n";
+
+        echo "E seu modelo: " . $this->moto->getModelo() . "\n";
+
+
+        echo "E seus seguro: " . $this->moto->verificarSeguroSobreIdade() . "\n";
+    }
+}
+
 
 $moto = new Moto();
+$moto->setMarca("Yamaha");
+
 $moto->setModelo("Factor");
-
-
 $moto->setIdadeProprietario(60);
 
-echo "A marca da moto é: " . Moto::getMarca() . "\n";
+// $scotters = new Scotter($moto);
 
-echo "E seu modelo: " . $moto->getModelo() . "\n";
+// var_dump($scotters);
 
+$condutor = new Condutor();
+$condutor->setNome("Denílson");
 
-echo "E seus seguro: " . $moto->verificarSeguroSobreIdade() . "\n";
+$condutor->inserirMoto($moto);
+$condutor->getInfoMoto();
