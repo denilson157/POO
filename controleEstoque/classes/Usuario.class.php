@@ -6,12 +6,62 @@ require_once(__DIR__ . '/abstratas/TipoPessoa.class.php');
 
 class Usuario extends TipoPessoa implements IUsuario
 {
-    public function setDados(array $dados):bool
+    protected $id;
+    protected $nome;
+    protected $cpf;
+
+    public function __construct()
     {
+        parent::__construct();
+    }
+
+    public function setDados(array $dados): bool
+    {
+        $this->id = $dados['id'] ?? null;
+        $this->nome = $dados['nome'] ?? null;
+        $this->cpf = $dados['cpf'] ?? null;
+
         return true;
     }
 
-    public function getDados(int $idUsuario):array
+    public function gravaDados(): bool
+    {
+
+        if (empty($this->id))
+            return $this->insereDados();
+        else
+            return $this->atualizaDados();
+    }
+
+
+    public function atualizaDados(): bool
+    {
+        $stmt = $this->prepare('UPDATE usuarios 
+        SET cpf = :cpf, nome = :nome 
+        WHERE
+            id = :id');
+
+        if ($stmt->execute([':cpf' => $this->cpf, ':nome' => $this->nome, ':id' => $this->id]))
+            return true;
+        else
+            return false;
+    }
+
+    public function insereDados(): bool
+    {
+        $stmt = $this->prepare('INSERT INTO usuarios (cpf, nome) 
+        VALUES 
+        (:cpf, :nome)');
+
+        if ($stmt->execute([':cpf' => $this->cpf, ':nome' => $this->nome]))
+            return true;
+        else
+            return false;
+    }
+
+
+
+    public function getDados(int $idUsuario): array
     {
         return [];
     }
