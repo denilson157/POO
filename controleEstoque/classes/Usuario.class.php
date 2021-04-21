@@ -59,6 +59,29 @@ class Usuario extends TipoPessoa implements IUsuario
             return false;
     }
 
+    public function listaDados(): array
+    {
+        $stmt = $this->prepare('SELECT * from usuarios');
+
+        $stmt->execute();
+
+
+        return $stmt->fetchAll(PDO::FETCH_BOTH);
+    }
+
+    public function apagaDados(): bool
+    {
+        if ($this->id) {
+
+            $stmt = $this->prepare('DELETE FROM usuarios WHERE id = :id');
+
+            if ($stmt->execute([':id' => $this->id]))
+                return true;
+            else
+                return false;
+        }
+        return false;
+    }
 
 
     public function getDados(int $idUsuario): array
